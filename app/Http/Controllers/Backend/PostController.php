@@ -7,6 +7,8 @@ use App\Models\Post;
 // use Illuminate\Http\Request;
 use App\Http\Requests\PostRequest;
 
+use Illuminate\Support\Facades\Storage;
+
 class PostController extends Controller
 {
     /**
@@ -53,7 +55,7 @@ class PostController extends Controller
             $post->save();
         }
         
-        return back()->with("status","Creado con exito");
+        return back()->with('status','Creado con exito');
                         
         //logica FUNCION STORE:   
         //1//creamos un post con el user_id y los datos del form de creacion
@@ -67,48 +69,50 @@ class PostController extends Controller
 
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Posts  $posts
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Posts $posts)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Posts  $posts
+     * @param  \App\Models\Post  $posts
      * @return \Illuminate\Http\Response
      */
-    public function edit(Posts $posts)
+    public function edit(Post $post)
     {
-        //
+        // dd($post);
+        return view('posts.edit', ['post' => $post]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Posts  $posts
+     * @param  \App\Models\Post  $posts
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Posts $posts)
+    public function update(PostRequest $request, Post $post)
     {
-        //
+        // return view('posts.edit');
+        // dd($request->all());
+        $post->update($request->all());
+
+        if($request->file('file')){
+            Storage::disk('public')->delete($post->image);
+            $post->image = $request->file('file')->store('posts', 'public');
+            $post->save();
+        }
+        return back()->with('status', 'actualizado con éxito');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Posts  $posts
+     * @param  \App\Models\Post  $posts
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Posts $posts)
+    public function destroy(Post $post)
     {
-        //
+        Storage::disk('public')->delete($post->image);
+        $post->delete();
+        return back()->with('status', 'Eliminado con éxito');
     }
 }
