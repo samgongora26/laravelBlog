@@ -13,8 +13,12 @@
                     @if($post->image)
                         <img src="{{ $post->get_image }}" alt="" class="card-img-top">
                     @elseif($post->iframe)
-                        <div class="embed-responsive embed-responsive-16by9">
-                            {!! $post->iframe !!}
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="embed-responsive embed-responsive-16by9">
+                                    {!! $post->iframe !!}
+                                </div>
+                            </div>
                         </div>
                     @endif
                     <p class="text-muted mb-0">

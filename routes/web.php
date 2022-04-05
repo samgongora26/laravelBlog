@@ -19,13 +19,15 @@ Route::get('/', function () {
     return view('welcome');
 }); */
 Route::get('/', [PageController::class, 'posts'])->name('posts');
-Route::get('blog/{post}', [PageController::class, 'post'])->name('post');
-// Route::get('/blog/{post:slug}', 'PageController@post')->name('post');
+//En la url se muestra el id del post
+// Route::get('blog/{post}', [PageController::class, 'post'])->name('post');
+//En la url se muestra el slug del post
+Route::get('/blog/{post:slug}', [PageController::class, 'post'])->name('post');
 
 Auth::routes();
-
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::resource('/posts', PostController::class)
     ->middleware('auth')
     ->except('show');
+
