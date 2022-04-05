@@ -96,7 +96,7 @@ class PostController extends Controller
         $post->update($request->all());
 
         if($request->file('file')){
-            Storage::disk('public')->delete($post->image);
+            // Storage::disk('public')->delete($post->image);
             $post->image = $request->file('file')->store('posts', 'public');
             $post->save();
         }

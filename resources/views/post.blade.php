@@ -10,6 +10,13 @@
                     <p class="card-text">
                         {{ $post->body }}
                     </p>
+                    @if($post->image)
+                        <img src="{{ $post->get_image }}" alt="" class="card-img-top">
+                    @elseif($post->iframe)
+                        <div class="embed-responsive embed-responsive-16by9">
+                            {!! $post->iframe !!}
+                        </div>
+                    @endif
                     <p class="text-muted mb-0">
                         <em>
                             &ndash; {{ $post->user->name }}                        
